@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -136,15 +137,45 @@ public class MainActivity extends AppCompatActivity {
                     che2 = 1;
                 }
                 if (che2 == 0) {
-                    customDialogListAdapter.addItem(cd.popupbuycom2.getText().toString(), cd.spinner.getSelectedItem().toString(),
-                            Double.valueOf(cd.popupkg2.getText().toString()), Integer.parseInt(cd.popupprice2.getText().toString()), cd.popupornum.getText().toString());
-                    cd.popuplistview.setAdapter(customDialogListAdapter);
-                    cd.popupbuy2.setText("" + (Double.parseDouble(cd.popupbuy2.getText().toString()) + Double.parseDouble(cd.popupkg2.getText().toString())));
-                    cd.sendData3(cd.popupbuycom2.getText().toString(), Double.valueOf(cd.popupkg2.getText().toString()), Integer.parseInt(cd.popupprice2.getText().toString()),
-                            cd.spinner.getSelectedItem().toString(), cd.popupornum.getText().toString(), dat.format(cal.getTime()), 2);
-                    cd.popupbuycom2.setText("");
-                    cd.popupkg2.setText("");
-                    cd.popupprice2.setText("");
+                    if (cd.spinner.getSelectedItem().toString().equals("기타")) {
+                        AlertDialog.Builder ad = new AlertDialog.Builder(MainActivity.this);
+                        ad.setTitle("원산지 입력");
+                        final EditText et = new EditText(MainActivity.this);
+                        ad.setView(et);
+                        ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String value = et.getText().toString();
+                                customDialogListAdapter.addItem(cd.popupbuycom2.getText().toString(), value,
+                                        Double.valueOf(cd.popupkg2.getText().toString()), Integer.parseInt(cd.popupprice2.getText().toString()), cd.popupornum.getText().toString());
+                                cd.popuplistview.setAdapter(customDialogListAdapter);
+                                cd.popupbuy2.setText("" + (Double.parseDouble(cd.popupbuy2.getText().toString()) + Double.parseDouble(cd.popupkg2.getText().toString())));
+                                cd.sendData3(cd.popupbuycom2.getText().toString(), Double.valueOf(cd.popupkg2.getText().toString()), Integer.parseInt(cd.popupprice2.getText().toString()),
+                                        value, cd.popupornum.getText().toString(), dat.format(cal.getTime()), 2);
+                                cd.popupbuycom2.setText("");
+                                cd.popupkg2.setText("");
+                                cd.popupprice2.setText("");
+                            }
+                        });
+                        ad.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        ad.show();
+                    } else {
+                        customDialogListAdapter.addItem(cd.popupbuycom2.getText().toString(), cd.spinner.getSelectedItem().toString(),
+                                Double.valueOf(cd.popupkg2.getText().toString()), Integer.parseInt(cd.popupprice2.getText().toString()), cd.popupornum.getText().toString());
+                        cd.popuplistview.setAdapter(customDialogListAdapter);
+                        cd.popupbuy2.setText("" + (Double.parseDouble(cd.popupbuy2.getText().toString()) + Double.parseDouble(cd.popupkg2.getText().toString())));
+                        cd.sendData3(cd.popupbuycom2.getText().toString(), Double.valueOf(cd.popupkg2.getText().toString()), Integer.parseInt(cd.popupprice2.getText().toString()),
+                                cd.spinner.getSelectedItem().toString(), cd.popupornum.getText().toString(), dat.format(cal.getTime()), 2);
+                        cd.popupbuycom2.setText("");
+                        cd.popupkg2.setText("");
+                        cd.popupprice2.setText("");
+                    }
+
                 }
             }
         });
@@ -159,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     // 리스트뷰 아이템 선택
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
@@ -296,5 +328,10 @@ public class MainActivity extends AppCompatActivity {
         orderListAdapter.list.clear();
         orderListAdapter.notifyDataSetChanged();
         check = 0;
+    }
+
+    public void mOnClickPDADD(View v) {
+        orderListAdapter.addItem("", "", String.valueOf(0), "", "", "추가구매");
+        orderListAdapter.notifyDataSetChanged();
     }
 }
