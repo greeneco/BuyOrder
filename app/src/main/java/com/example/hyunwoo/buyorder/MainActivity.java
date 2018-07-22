@@ -30,6 +30,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
     // Dialog
     CustomDialog cd;
+    ProductDialog pro;
 
     // OKHTTP
     private static final String TAG_RESULT = "result";
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 구매 리스트
     public static OrderListAdapter orderListAdapter;
-    private ListView orderView;
+    public ListView orderView;
 
     public static CustomDialogListAdapter customDialogListAdapter;
     private MainActivity activity;
@@ -73,11 +74,18 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
         int width = dm.widthPixels; //디바이스 화면 너비
         int height = dm.heightPixels; //디바이스 화면 높이
+
         cd = new CustomDialog(this);
         WindowManager.LayoutParams wm = cd.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기 위해
         wm.copyFrom(cd.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
         wm.width = width;  //화면 너비의 절반
         wm.height = (int) (height / 1.3);  //화면 높이의 절반
+
+        pro = new ProductDialog(this);
+        WindowManager.LayoutParams wm2 = pro.getWindow().getAttributes();
+        wm2.copyFrom(pro.getWindow().getAttributes());
+        wm2.width = (int) (width / 2.3);
+        wm2.height = height;
 
         orderListAdapter = new OrderListAdapter();
         orderView = findViewById(R.id.orderView);
@@ -99,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 if (orderListAdapter.getCount() == 0 && check == 0) {
                     cal.add(Calendar.DATE, 1);
                     sendData(dat.format(cal.getTime()));
-                    Log.d("날짜", dat.format(cal.getTime()));
+                    //Log.d("날짜", dat.format(cal.getTime()));
                     cal.add(Calendar.DATE, -1);
                     check = 1;
                 }
@@ -190,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     // 리스트뷰 아이템 선택
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
@@ -331,7 +338,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mOnClickPDADD(View v) {
-        orderListAdapter.addItem("", "", String.valueOf(0), "", "", "추가구매");
-        orderListAdapter.notifyDataSetChanged();
+        cal.add(Calendar.DATE, 1);
+        pro.Datetext.setText(dat.format(cal.getTime()));
+        cal.add(Calendar.DATE, -1);
+        pro.show();
+        //orderListAdapter.list.clear();
+        //orderListAdapter.addItem("", "", String.valueOf(0), "", "", "추가구매");
+        //orderListAdapter.notifyDataSetChanged();
     }
 }

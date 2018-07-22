@@ -9,13 +9,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by hyunwoo on 2018-02-14.
- */
-public class OrderListAdapter extends BaseAdapter {
-    public ArrayList<OrderList> list = new ArrayList<>();
+public class ProductDialogListAdapter extends BaseAdapter {
 
-    public OrderListAdapter() {
+    public ArrayList<Productitem> list = new ArrayList<>();
+
+    private ProductDialog activity;
+
+    ProductDialogListAdapter(ProductDialog activity) {
+        this.activity = activity;
     }
 
     /**
@@ -36,7 +37,6 @@ public class OrderListAdapter extends BaseAdapter {
      * @return The data at the specified position.
      */
     @Override
-
     public Object getItem(int position) {
         return list.get(position);
     }
@@ -72,46 +72,34 @@ public class OrderListAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
         final Context context = parent.getContext();
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.orderitem, parent, false);
+            convertView = inflater.inflate(R.layout.productitem, parent, false);
         }
 
-        TextView Textproductsub = (TextView) convertView.findViewById(R.id.Textproductsub);
-        TextView Textoriginsub = (TextView) convertView.findViewById(R.id.Textoriginsub);
-        TextView Textordersub = (TextView) convertView.findViewById(R.id.Textordersub);
-        TextView Textbuysub = (TextView) convertView.findViewById(R.id.Textbuysub);
-        TextView Textpricesub = (TextView) convertView.findViewById(R.id.Textpricesub);
-        TextView Textrequestsub = (TextView) convertView.findViewById(R.id.Textrequestsub);
+        TextView product = (TextView) convertView.findViewById(R.id.product);
+        TextView productcode = (TextView) convertView.findViewById(R.id.productcode);
+        TextView product1 = (TextView) convertView.findViewById(R.id.product1);
+        TextView product2 = (TextView) convertView.findViewById(R.id.product2);
 
-        OrderList orderViewItem = list.get(position);
+        Productitem productitem = list.get(position);
 
-        Textproductsub.setText(orderViewItem.getProduct());
-        Textoriginsub.setText(orderViewItem.getOrigin());
-        Textordersub.setText(orderViewItem.getOrderkg().toString());
-        Textbuysub.setText(orderViewItem.getBuykg().toString());
-        Textpricesub.setText(orderViewItem.getPrice().toString());
-        Textrequestsub.setText(orderViewItem.getRequest());
-
-        /*
-        if (list.get(position).getOrderkg().equals(list.get(position).getBuykg())) {
-            convertView.setBackgroundColor(0xFF99FF99);
-        }*/
+        product.setText(productitem.getProduct());
+        productcode.setText(productitem.getCode());
+        product1.setText(productitem.getPro2());
+        product2.setText(productitem.getPro2());
         return convertView;
     }
 
-    public void addItem(String product, String origin, String orderkg, String buykg, String price, String request) {
-        OrderList Item = new OrderList(product, origin, orderkg, buykg, price, request);
+    public void addItem(String product, String code, String pro1, String pro2) {
+        Productitem item = new Productitem();
 
-        Item.setProduct(product);
-        Item.setOrigin(origin);
-        Item.setOrderkg(orderkg);
-        Item.setBuykg(buykg);
-        Item.setPrice(price);
-        Item.setRequest(request);
-
-        list.add(Item);
+        item.setProduct(product);
+        item.setCode(code);
+        item.setPro1(pro1);
+        item.setPro2(pro2);
+        list.add(item);
     }
 }

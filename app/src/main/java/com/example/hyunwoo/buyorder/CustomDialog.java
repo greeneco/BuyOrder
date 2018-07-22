@@ -80,8 +80,6 @@ public class CustomDialog extends Dialog implements AdapterView.OnItemClickListe
         popupbutton = (Button) findViewById(R.id.popupbutton);
         popupadd = (Button) findViewById(R.id.popupadd);
         popuplistview = (ListView) findViewById(R.id.popuplistview);
-        //popuplistview.setAdapter(customDialogListAdapter);
-        //customDialogListAdapter.notifyDataSetChanged();
         popuplistview.setOnItemClickListener(this);
 
         registerForContextMenu(popuplistview);

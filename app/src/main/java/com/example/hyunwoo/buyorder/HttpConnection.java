@@ -71,4 +71,14 @@ public class HttpConnection {
                 .build();
         client.newCall(request).enqueue(callback4);
     }
+
+    public void requestWebServer5(Callback callback5) {
+        RequestBody body = new FormBody.Builder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://221.144.213.95/BuyorderProduct.php")
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback5);
+    }
 }
