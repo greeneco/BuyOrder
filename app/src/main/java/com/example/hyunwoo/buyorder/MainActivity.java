@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 cd.dismiss();
                 orderListAdapter.list.clear();
+                orderListAdapter.notifyDataSetChanged();
                 cal.add(Calendar.DATE, 1);
                 sendData(dat.format(cal.getTime()));
                 cal.add(Calendar.DATE, -1);
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
             cd.popupkg2.setText("");
             cd.popupprice2.setText("");
             customDialogListAdapter.buylist1.clear();
+            customDialogListAdapter.notifyDataSetChanged();
             cd.popuplistview.setAdapter(customDialogListAdapter);
             sendData4(orderListAdapter.list.get(position).getPrice().toString());
             cd.spinner.setAdapter(cd.adspin);

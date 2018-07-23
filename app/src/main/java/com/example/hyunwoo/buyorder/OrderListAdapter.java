@@ -72,7 +72,7 @@ public class OrderListAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
+        //final int pos = position;
         final Context context = parent.getContext();
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -95,8 +95,7 @@ public class OrderListAdapter extends BaseAdapter {
         Textpricesub.setText(orderViewItem.getPrice().toString());
         Textrequestsub.setText(orderViewItem.getRequest());
 
-        /*
-        if (list.get(position).getOrderkg().equals(list.get(position).getBuykg())) {
+        /*if (list.get(position).getRequest().equals("추가구매")) {
             convertView.setBackgroundColor(0xFF99FF99);
         }*/
         return convertView;
