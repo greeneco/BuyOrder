@@ -142,7 +142,6 @@ public class CustomDialog extends Dialog implements AdapterView.OnItemClickListe
             }
         }.start();
     }
-
     private final Callback callback3 = new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {

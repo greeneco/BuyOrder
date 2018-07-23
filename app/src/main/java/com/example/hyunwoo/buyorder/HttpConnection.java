@@ -81,4 +81,19 @@ public class HttpConnection {
                 .build();
         client.newCall(request).enqueue(callback5);
     }
+
+    public void requestWebServer6(String parameter, String parameter2, String parameter3, String parameter4, String parameter5, Callback callback6) {
+        RequestBody body = new FormBody.Builder()
+                .add("order", parameter)
+                .add("date", parameter2)
+                .add("loc", parameter3)
+                .add("etc", parameter4)
+                .add("code", parameter5)
+                .build();
+        Request request = new Request.Builder()
+                .url("http://221.144.213.95/Buyorder.php")
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback6);
+    }
 }

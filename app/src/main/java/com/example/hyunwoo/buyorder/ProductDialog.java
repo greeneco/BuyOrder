@@ -28,6 +28,7 @@ public class ProductDialog extends Dialog implements AdapterView.OnItemClickList
     private static final String TAG_CODE = "code";
     private static final String TAG_RESULT = "result";
     private HttpConnection httpConn = HttpConnection.getInstance();
+    CustomDialog cd;
 
     int loc = 0;
     Button Ok, Cancel;
@@ -105,19 +106,25 @@ public class ProductDialog extends Dialog implements AdapterView.OnItemClickList
         }
     };
 
-    /**
-     * Callback method to be invoked when an item in this AdapterView has
-     * been clicked.
-     * <p>
-     * Implementers can call getItemAtPosition(position) if they need
-     * to access the data associated with the selected item.
-     *
-     * @param parent   The AdapterView where the click happened.
-     * @param view     The view within the AdapterView that was clicked (this
-     *                 will be a view provided by the adapter)
-     * @param position The position of the view in the adapter.
-     * @param id       The row id of the item that was clicked.
-     */
+    public void sendData6(final String ord, final String dat, final String loc, final String etc, final String code) {
+        new Thread() {
+            public void run() {
+                httpConn.requestWebServer6(ord, dat, loc, etc, code, callback6);
+            }
+        }.start();
+    }
+
+    private final Callback callback6 = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            Log.d(TAG_RESULT, "콜백오류:" + e.getMessage());
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+        }
+    };
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         final CharSequence items2[] = {"국내산", "중국산", "베트남산", "칠레산", "대만산", "뉴질랜드산", "필리핀산", "남아공산", "미국산", "기타"};
@@ -126,7 +133,6 @@ public class ProductDialog extends Dialog implements AdapterView.OnItemClickList
         builder.setTitle("원산지선택");
         builder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Log.d("테스트", String.valueOf(Log.d("테스트", MainActivity.orderListAdapter.list.get(0).getPrice().toString().substring(0,3))));
             }
         });
         builder.setSingleChoiceItems(items2, 0, new DialogInterface.OnClickListener() {
@@ -178,8 +184,10 @@ public class ProductDialog extends Dialog implements AdapterView.OnItemClickList
                     }
                 }
                 if (ccheck == 0 && !items2[which].equals("기타")) {
+                    sendData6(MainActivity.orderListAdapter.list.get(0).getPrice().toString().substring(0, 5) + productDialogListAdapter.list.get(position).getCode().toString().substring(4, 9) + String.valueOf(loc) + "00"
+                            , Datetext.getText().toString(), items2[which].toString(), "", productDialogListAdapter.list.get(position).getCode().toString());
                     MainActivity.orderListAdapter.addItem(productDialogListAdapter.list.get(position).getProduct(), items2[which].toString(), String.valueOf(0),
-                            productDialogListAdapter.list.get(position).getCode().toString().substring(4, 9) + String.valueOf(loc) + "00", "", "추가구매");
+                            "", MainActivity.orderListAdapter.list.get(0).getPrice().toString().substring(0, 5) + productDialogListAdapter.list.get(position).getCode().toString().substring(4, 9) + String.valueOf(loc) + "00", "추가구매");
                     MainActivity.orderListAdapter.notifyDataSetChanged();
                     dismiss();
                 } else if (ccheck == 0 && items2[which].equals("기타")) {
@@ -191,8 +199,10 @@ public class ProductDialog extends Dialog implements AdapterView.OnItemClickList
                     edit2.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            sendData6(MainActivity.orderListAdapter.list.get(0).getPrice().toString().substring(0, 5) + productDialogListAdapter.list.get(position).getCode().toString().substring(4, 9) + String.valueOf(loc) + "00"
+                                    , Datetext.getText().toString(), edit3.getText().toString(), "", productDialogListAdapter.list.get(position).getCode().toString());
                             MainActivity.orderListAdapter.addItem(productDialogListAdapter.list.get(position).getProduct(), edit3.getText().toString(), String.valueOf(0),
-                                    productDialogListAdapter.list.get(position).getCode().toString().substring(4, 9) + String.valueOf(loc) + "00", "", "추가구매");
+                                    MainActivity.orderListAdapter.list.get(0).getPrice().toString().substring(0, 5) + productDialogListAdapter.list.get(position).getCode().toString().substring(4, 9) + String.valueOf(loc) + "00", "", "추가구매");
                             MainActivity.orderListAdapter.notifyDataSetChanged();
                             dialog.cancel();
                         }
